@@ -4,12 +4,20 @@
         "node": true
     },
     "extends": [
-        "airbnb-base"
+        "airbnb-base", "prettier", "plugin:node/recommended"
     ],
+    "plugins": ["prettier"],
     "parserOptions": {
         "ecmaVersion": 2020
     },
     "rules": {
-        "no-console": "off"
+        "no-underscore-dangle": "off",
+        "prettier/prettier": "error",
+        "no-unused-vars": "warn",
+        "no-console": "off",
+        "func-names": "off",
+        "no-process-exit": "off",
+        "object-shorthand": "off",
+        "class-methods-use-this": "off"
     }
 }
