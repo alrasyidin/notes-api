@@ -1,10 +1,9 @@
 {
     "env": {
-        "es2021": true,
         "node": true
     },
     "extends": [
-        "airbnb-base", "prettier", "plugin:node/recommended"
+        "airbnb/base", "prettier", "plugin:node/recommended"
     ],
     "plugins": ["prettier"],
     "parserOptions": {
@@ -12,12 +11,13 @@
     },
     "rules": {
         "no-underscore-dangle": "off",
-        "prettier/prettier": "error",
+        "prettier/prettier": "off",
         "no-unused-vars": "warn",
         "no-console": "off",
         "func-names": "off",
         "no-process-exit": "off",
         "object-shorthand": "off",
-        "class-methods-use-this": "off"
+        "class-methods-use-this": "off",
+        "camelcase": "off"
     }
 }
