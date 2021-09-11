@@ -2,7 +2,7 @@ const { NotePayloadSchema } = require("./schema")
 
 
 const NotesValidator = {
-    validateNotePayload: paylod => {
+    validateNotePayload: payload => {
         const validationResult = NotePayloadSchema.validate(payload);
         
         if (validationResult.error) {
