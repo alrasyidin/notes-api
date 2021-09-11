@@ -32,7 +32,7 @@ class NotesService {
   }
 
   getNote(id) {
-    const note = this._notes.find((note) => note.id === id);
+    const note = this._notes.find((item) => item.id === id);
 
     if (!note) {
       throw new NotFoundError('Catatan tidak ditemukan');
