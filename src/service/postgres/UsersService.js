@@ -9,11 +9,11 @@ class UsersService {
     this._pool = new Pool();
   }
 
-  async addUser({ username, password, fullname }) {
+  async addNewUser({ username, password, fullname }) {
     await this.verifyNewUsername(username);
 
     const id = `user-${nanoid(16)}`;
-    const hashedPassword = bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const query = {
       text: 'INSERT INTO users values($1,$2,$3,$4) RETURNING id',
@@ -22,7 +22,9 @@ class UsersService {
 
     const result = await this._pool.query(query);
 
-    if (result.rows.length === 0) throw new InvariantError('Gagal menambahkan user');
+    if (result.rows.length === 0) {
+      throw new InvariantError('Gagal menambahkan user');
+    }
 
     return result.rows[0].id;
   }
@@ -35,8 +37,9 @@ class UsersService {
 
     const result = await this._pool.query(query);
 
-    if (result.rows.length > 0)
+    if (result.rows.length > 0) {
       throw new InvariantError('Gagal menambahkan user. Username sudah digunakan');
+    }
   }
 
   async getByUserId(userId) {
@@ -47,7 +50,9 @@ class UsersService {
 
     const result = await this._pool.query(query);
 
-    if (result.rows.length === 0) throw new NotFoundError('User tidak ditemukan');
+    if (result.rows.length === 0) {
+      throw new NotFoundError('User tidak ditemukan');
+    }
 
     return result.rows[0];
   }
