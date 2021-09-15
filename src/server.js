@@ -1,16 +1,22 @@
 require('dotenv').config();
 
 const Hapi = require('@hapi/hapi');
+const Jwt = require('@hapi/jwt');
+const authentications = require('./api/authentications');
 const notes = require('./api/notes');
 const users = require('./api/users');
+const AuthenticationsService = require('./service/postgres/AuthenticationsService');
 const NotesService = require('./service/postgres/NotesService');
 const UsersService = require('./service/postgres/UsersService');
 const NotesValidator = require('./validator/notes');
 const UsersValidator = require('./validator/users');
+const tokenManager = require('./tokenize/TokenManager');
+const AuthenticationsValidator = require('./validator/authentications');
 
 const init = async () => {
   const notesService = new NotesService();
   const usersService = new UsersService();
+  const authenticationsService = new AuthenticationsService();
 
   const server = Hapi.server({
     port: process.env.PORT,
@@ -20,6 +26,30 @@ const init = async () => {
         origin: ['*'],
       },
     },
+  });
+
+  // register externals plugin
+  await server.register([
+    {
+      plugin: Jwt,
+    },
+  ]);
+
+  // register stragey auth
+  server.auth.strategy('notesapp_jwt', 'jwt', {
+    keys: process.env.ACCESS_TOKEN_KEY,
+    verify: {
+      aud: false,
+      iss: false,
+      sub: false,
+      maxAgeSec: process.env.ACCESS_TOKEN_AGE,
+    },
+    validate: (aritcats) => ({
+      isValid: true,
+      credentials: {
+        id: aritcats.decoded.payload.id,
+      },
+    }),
   });
 
   await server.register([
@@ -35,6 +65,15 @@ const init = async () => {
       options: {
         service: usersService,
         validator: UsersValidator,
+      },
+    },
+    {
+      plugin: authentications,
+      options: {
+        authenticationsService,
+        usersService,
+        tokenManager,
+        validator: AuthenticationsValidator,
       },
     },
   ]);
