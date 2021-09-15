@@ -3,9 +3,13 @@
         "node": true
     },
     "extends": [
-        "airbnb/base", "prettier", "plugin:node/recommended"
+        "airbnb/base",
+        "prettier",
+        "plugin:node/recommended"
     ],
-    "plugins": ["prettier"],
+    "plugins": [
+        "prettier"
+    ],
     "parserOptions": {
         "ecmaVersion": 2020
     },
