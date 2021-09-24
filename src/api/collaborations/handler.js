@@ -21,13 +21,15 @@ class CollaborationsHandler {
 
       const collaborationId = await this._collaborationService.addCollaborator(noteId, userId);
 
-      return {
+      const response = h.response({
         status: 'success',
         message: 'Kolaborasi berhasil ditambahkan',
         data: {
           collaborationId,
         },
-      };
+      });
+      response.code(201);
+      return response;
     } catch (error) {
       if (error instanceof ClientError) {
         const response = h.response({
