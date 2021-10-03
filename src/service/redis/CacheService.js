@@ -7,7 +7,7 @@ class CacheService {
     });
 
     this._client.on('error', (error) => {
-      console.error(error);
+      throw error;
     });
   }
 
@@ -15,10 +15,10 @@ class CacheService {
     return new Promise((resolve, reject) => {
       this._client.set(key, value, 'EX', expirationInSecond, (error, ok) => {
         if (error) {
-          reject(error);
+          return reject(error);
         }
 
-        resolve(ok);
+        return resolve(ok);
       });
     });
   }
@@ -27,14 +27,14 @@ class CacheService {
     return new Promise((resolve, reject) => {
       this._client.get(key, (error, reply) => {
         if (error) {
-          reject(error);
+          return reject(error);
         }
 
         if (reply === null) {
-          throw new Error('Cache tidak ditemukan');
+          return reject(new Error('Cache tidak ditemukan'));
         }
 
-        resolve(reply.toString());
+        return resolve(reply.toString());
       });
     });
   }
@@ -43,9 +43,9 @@ class CacheService {
     return new Promise((resolve, reject) => {
       this._client.del(key, (error, count) => {
         if (error) {
-          reject(error);
+          return reject(error);
         }
-        resolve(count);
+        return resolve(count);
       });
     });
   }
