@@ -10,7 +10,7 @@ class StorageService {
   }
 
   writeFile(file, meta) {
-    const filename = `${Date.now()}_${meta.filename}`;
+    const filename = `${Date.now()}${meta.filename}`;
     const path = `${this._folder}/${filename}`;
 
     const filestream = fs.createWriteStream(path);
@@ -20,7 +20,7 @@ class StorageService {
 
       file.pipe(filestream);
 
-      filestream.on('end', () => resolve(filename));
+      file.on('end', () => resolve(filename));
     });
   }
 }

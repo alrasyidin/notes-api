@@ -3,3 +3,4 @@ node_modules/
 dicoding-notes-api.pem
 .env
 .prod.env
+src/api/uploads/file/images
