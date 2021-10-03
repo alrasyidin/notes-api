@@ -22,7 +22,7 @@ const _exports = require('./api/exports');
 const ProducersService = require('./service/rabbitmq/ProducersService');
 const ExportsValidator = require('./validator/exports');
 const uploads = require('./api/uploads');
-const StorageService = require('./service/storage/StorageService');
+const StorageService = require('./service/S3/StorageService');
 const UploadsValidator = require('./validator/uploads');
 
 const init = async () => {
@@ -30,7 +30,11 @@ const init = async () => {
   const notesService = new NotesService(collaborationsService);
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
-  const storagesService = new StorageService(path.resolve(__dirname, 'api/uploads/file/images'));
+
+  // using local file static
+  // const storagesService = new StorageService(path.resolve(__dirname, 'api/uploads/file/images'));
+  // using S3
+  const storagesService = new StorageService();
 
   const server = Hapi.server({
     port: process.env.PORT,
