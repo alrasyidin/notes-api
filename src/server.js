@@ -24,17 +24,21 @@ const ExportsValidator = require('./validator/exports');
 const uploads = require('./api/uploads');
 const StorageService = require('./service/S3/StorageService');
 const UploadsValidator = require('./validator/uploads');
+const CacheService = require('./service/redis/CacheService');
 
 const init = async () => {
-  const collaborationsService = new CollaborationsService();
-  const notesService = new NotesService(collaborationsService);
-  const usersService = new UsersService();
-  const authenticationsService = new AuthenticationsService();
-
   // using local file static
   // const storagesService = new StorageService(path.resolve(__dirname, 'api/uploads/file/images'));
   // using S3
   const storagesService = new StorageService();
+
+  // cache
+  const cacheService = new CacheService();
+
+  const collaborationsService = new CollaborationsService(cacheService);
+  const notesService = new NotesService(collaborationsService, cacheService);
+  const usersService = new UsersService();
+  const authenticationsService = new AuthenticationsService();
 
   const server = Hapi.server({
     port: process.env.PORT,
