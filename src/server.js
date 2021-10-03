@@ -1,7 +1,5 @@
 require('dotenv').config();
 
-const path = require('path');
-
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
 const Inert = require('@hapi/inert');
